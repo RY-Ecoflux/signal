@@ -12,21 +12,55 @@ import matplotlib.pyplot as plt
 import scipy.signal
 import csv
 
-file = open("test.csv")
-csvreader = csv.reader(file)
-hyp = []
-for row in csvreader:
-    hyp.append(row[1])
-file.close()
 
-print(len(hyp))
+def import_données(nom_fich, nb_col, nb_col2=None):
+    """
+    Ouvrir le fichier CSV
+    Entrée : 
+        nom du fichier CSV, sous forme .csv, str
+        nombre de colonne de données à récupérer, int
+    Sortie : 
+        colonne de données, liste
+    """
+    file = open(nom_fich)
+    csvreader = csv.reader(file)
+    données = []
+    for row in csvreader:
+        données.append(row[nb_col])
+    file.close()
+    return données
+
+def tracer_données(x, y):
+    """
+    Tracer un graphique des données choisies
+    Entrée : le temps et les données, liste
+    Sortie : graphique
+    """
+    plt.figure(1)
+    plt.xlabel("Time [s]")
+    plt.ylabel("Amplitude")
+    plt.scatter(x, y)
+    plt.xticks(rotation=45)
+    plt.show()
+
+def échelle_temps(fs, T):
+    """
+    Générer une séquence de temps
+    Entrée :
+        fs : fréquence d'échantillonnage, int
+        T : temps final, int
+    Sortie :
+        Echelle de temps, liste
+    """
+    t = np.arange(0, T+1/fs, 1/fs)
+    return t
+
+hyp = import_données("test.csv", 1)
 fs = 96000 # 1 kHz sampling frequency
 T = 20 # 10s signal length
-t = np.arange(0, 1611073)
-plt.figure(1)
-plt.xlabel("Time [s]")
-plt.ylabel("Amplitude")
-plt.plot(t, hyp)
+t = échelle_temps(fs, T)
+# Données acoustiques
+tracer_données(t, hyp)
 
 # Low-pass filter
 fc = 200
