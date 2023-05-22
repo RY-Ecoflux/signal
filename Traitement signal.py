@@ -30,51 +30,46 @@ def import_données(nom_fich, nb_col, nb_col2=None):
     file.close()
     return données
 
-def tracer_données(x, y):
+def tracer_données(n, x, y):
     """
     Tracer un graphique des données choisies
-    Entrée : le temps et les données, liste
-    Sortie : graphique
+    Entrée : 
+        nombre du figure, int
+        le temps, liste de float
+        les données, liste de float
+    Sortie : 
+        graphique
     """
-    plt.figure(1)
+    plt.figure(n)
     plt.xlabel("Time [s]")
     plt.ylabel("Amplitude")
-    plt.scatter(x, y)
+    # Par défaut, l'index 0 est le titre de la colonne
+    plt.scatter(x[1:], y[1:])
     plt.xticks(rotation=45)
-    plt.show()
-
-def échelle_temps(fs, T):
-    """
-    Générer une séquence de temps
-    Entrée :
-        fs : fréquence d'échantillonnage, int
-        T : temps final, int
-    Sortie :
-        Echelle de temps, liste
-    """
-    t = np.arange(0, T+1/fs, 1/fs)
-    return t
 
 hyp = import_données("test.csv", 1)
 fs = 96000 # 1 kHz sampling frequency
 T = 20 # 10s signal length
-t = échelle_temps(fs, T)
+t = np.arange(0, T+1/fs, 1/fs)
 # Données acoustiques
 try:
-    tracer_données(t, hyp)
+    tracer_données(1, t, hyp)
+    plt.title("Données brutes de l'hydrophone")
+    plt.show()
 except:
     t = t[0:len(hyp)]
-    tracer_données(t, hyp)
+    tracer_données(1, t, hyp)
+    plt.title("Données brutes de l'hydrophone")
+    plt.show()
 
 # Low-pass filter
 fc = 200
 sos = scipy.signal.butter(2, fc, 'low', fs=fs, output='sos')
 filtered = scipy.signal.sosfilt(sos, hyp)
-plt.figure(2)
-plt.plot(t, filtered)
-plt.xlabel("Time [s]")
-plt.ylabel("Amplitude")
-plt.title("Low-Pass at 200Hz")
+# Données acoustiques filtrées
+tracer_données(2, t, filtered)
+plt.title("Passe-Bas à 200Hz")
+plt.show()
 
 # Hanning window
 m = t.size
