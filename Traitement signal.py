@@ -60,7 +60,11 @@ fs = 96000 # 1 kHz sampling frequency
 T = 20 # 10s signal length
 t = échelle_temps(fs, T)
 # Données acoustiques
-tracer_données(t, hyp)
+try:
+    tracer_données(t, hyp)
+except:
+    t = t[0:len(hyp)]
+    tracer_données(t, hyp)
 
 # Low-pass filter
 fc = 200
