@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 
 a = [1, 2, 3, 4, 5]
-b = [1, 1, 1]
+b = [1, 1, 1, 1, 1]
 
 
 def tracer_données(x, y):
@@ -17,7 +17,6 @@ def tracer_données(x, y):
     plt.ylabel("Amplitude")
     plt.scatter(x, y)
     plt.xticks(rotation=45)
-    plt.show()
 
 def échelle_temps(fs, T):
     """
@@ -32,12 +31,12 @@ def échelle_temps(fs, T):
     return t
 
 try:
-    plt.figure(1)
-    plt.xlabel("Time [s]")
-    plt.ylabel("Amplitude")
-    plt.scatter(a, b)
-    plt.xticks(rotation=45)
+    tracer_données(a,b)
+    plt.title("test")
     plt.show()
 except:
     a = a[0:len(b)]
     tracer_données(a, b)
+    plt.title("test")
+    plt.show()
+    
