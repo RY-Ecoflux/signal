@@ -44,7 +44,7 @@ def tracer_données(n, x, y):
     plt.xlabel("Time [s]")
     plt.ylabel("Amplitude")
     # Par défaut, l'index 0 est le titre de la colonne
-    plt.scatter(x[1:], y[1:])
+    plt.scatter(x, y[1:])
     plt.xticks(rotation=45)
 
 hyp = import_données("test.csv", 1)
